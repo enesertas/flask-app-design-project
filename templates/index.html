@@ -102,29 +102,34 @@
     </section>
   </body>
   <script type="module">
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function(url_public) {
+      
       var loadButton = document.getElementById('button-4');
       var loadingContainer = document.getElementById('loading-container');
       var loadingSpinner = document.getElementById('loading-spinner');
       var imageContainer = document.getElementById('image-container');
+
       loadButton.addEventListener('click',async function() {
-        
       loadingContainer.style.display = 'flex';
       loadingSpinner.style.display = 'flex';
       imageContainer.style.display = 'none'
+
+      var req = url_public+"/generate-image"
       
-        const response = await fetch("http://localhost:5000/generate-image")
-        .then(response => response.blob())  
+      req = req.split(']')[1]
+
+        const response = await fetch(req)
+        .then(response => response.blob()) 
         .then(blob => { 
           // Create an image element 
           const imageElement = document.getElementById('generated-image')
           
-          // Set the src attribute to the Blob URL 
-      
+          // Set the src attribute to the Blob URL
           imageElement.src = URL.createObjectURL(blob);
 
         }).catch(error => { 
           console.error('Error fetching image:', error); 
+          console.log(url_public)
         });
         loadingContainer.style.display = 'none'
         loadingSpinner.style.display = 'none';
