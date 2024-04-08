@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, send_file, render_template
+from flask_ngrok import run_with_ngrok
 from flask_cors import CORS, cross_origin
 from PIL import Image
 from io import BytesIO
@@ -7,6 +8,7 @@ import cv2
 import time
 
 app = Flask(__name__)
+run_with_ngrok(app)
 CORS(app)
 
 @app.route("/", methods=['GET'])
