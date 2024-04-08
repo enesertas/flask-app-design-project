@@ -33,7 +33,7 @@
     </div>
     <div class="generation">
         <div class="generation-container">
-            <input class="prompt" type="text">
+            <input class="prompt" id="prompt" type="text">
             <button class="button-4" id="button-4"><img src="static/styles/button.png" alt=""></button>
         </div>
     </div>
@@ -108,17 +108,20 @@
       var loadingContainer = document.getElementById('loading-container');
       var loadingSpinner = document.getElementById('loading-spinner');
       var imageContainer = document.getElementById('image-container');
+      var prompt = document.getElementById('prompt')
 
       loadButton.addEventListener('click',async function() {
       loadingContainer.style.display = 'flex';
       loadingSpinner.style.display = 'flex';
       imageContainer.style.display = 'none'
+      var prompt_value = prompt.value
+
 
       var req = url_public+"/generate-image"
       
       req = req.split(']')[1]
 
-        const response = await fetch(req)
+        const response = await fetch(req+"?prompt="+prompt_value)
         .then(response => response.blob()) 
         .then(blob => { 
           // Create an image element 
