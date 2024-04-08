@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_file, render_template
+from flask import Flask, jsonify, send_file, render_template, request
 from flask_cors import CORS
 from PIL import Image
 from io import BytesIO
@@ -24,14 +24,15 @@ syncdiffusion_model = SyncDiffusion(device, sd_version="2.0")
 def home():
     return render_template('index.html', url_public = url_public)
 
-@app.route("/generate-image", methods=['GET'])
+@app.route("/generate-image", methods=['GET', 'POST'])
 def generate():
 
+    prompt = request.args.get('prompt')
     seed_everything(100)
 
     # Generate images
     img = syncdiffusion_model.sample_syncdiffusion(
-        prompts = "a photo of a mountain range at twilight",
+        prompts = prompt,
         negative_prompts = "",
         height = 512,
         width = 3072,
@@ -45,8 +46,7 @@ def generate():
     )
     img.save("./flask-app-design-project/templates/result.jpg")
     print(f"[INFO] saved the result")
-    
-    return send_file("/templates/result.jpg", as_attachment="result.jpg", mimetype="image/jpg")
+    return send_file("./templates/result.jpg", as_attachment="result.jpg", mimetype="image/jpg")
 
 if __name__ == "__main__":
     app.run()
