@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_file
+from flask import Flask, jsonify, send_file, render_template
 from flask_cors import CORS, cross_origin
 from PIL import Image
 from io import BytesIO
@@ -9,7 +9,11 @@ import time
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/generate-image", methods=['GET', 'POST'])
+@app.route("/", methods=['GET'])
+def home():
+    return render_template('index.html')
+
+@app.route("/generate-image", methods=['GET'])
 def generate():
     
     # generate syncdiffusion image, encode in base64 and send in json
