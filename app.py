@@ -30,20 +30,42 @@ def generate():
     prompt = request.args.get('prompt')
     seed_everything(100)
 
-    # Generate images
-    img = syncdiffusion_model.sample_syncdiffusion(
+    # Hedi
+    img = syncdiffusion.sample_syncdiffusion(
         prompts = prompt,
         negative_prompts = "",
-        height = 512,
-        width = 3072,
-        num_inference_steps = 20,
+        height = 128,
+        width = 256,  # 1024, 3072
+        #latent_size = 64, # for a 512x512 model (96 for a 768x768 model)
+        num_steps = 10,
         guidance_scale = 7.5,
         sync_weight = 20.0,
         sync_decay_rate = 0.95,
-        sync_freq = 1,
         sync_thres = 10,
+        sync_freq = 1,
         stride = 16,
+        Wfov=150,
+        Hfov=100,
+        h_patch=32,
+        w_patch=32,
+        n_rows=3,
+        loop_closure = False
     )
+    
+    # # Generate images
+    # img = syncdiffusion_model.sample_syncdiffusion(
+    #     prompts = prompt,
+    #     negative_prompts = "",
+    #     height = 512,
+    #     width = 3072,
+    #     num_inference_steps = 20,
+    #     guidance_scale = 7.5,
+    #     sync_weight = 20.0,
+    #     sync_decay_rate = 0.95,
+    #     sync_freq = 1,
+    #     sync_thres = 10,
+    #     stride = 16,
+    # )
     img.save("./flask-app-design-project/templates/result.jpg")
     print(f"[INFO] saved the result")
     return send_file("./templates/result.jpg", as_attachment="result.jpg", mimetype="image/jpg")
