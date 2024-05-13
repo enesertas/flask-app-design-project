@@ -16,7 +16,6 @@ app = Flask(__name__)
 CORS(app)
 url_public = sys.argv[1]
 device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
-
 # Load SyncDiffusion model
 syncdiffusion_model = SyncDiffusion(device, sd_version="2.0")
 
@@ -29,7 +28,7 @@ def generate():
 
     prompt = request.args.get('prompt')
     seed_everything(100)
-
+    syncdiffusion = SyncDiffusion(device, sd_version="2.0")
     # Hedi
     img = syncdiffusion.sample_syncdiffusion(
         prompts = prompt,
@@ -37,19 +36,19 @@ def generate():
         height = 128,
         width = 256,  # 1024, 3072
         #latent_size = 64, # for a 512x512 model (96 for a 768x768 model)
-        num_steps = 10,
+        num_inference_steps = 10,
         guidance_scale = 7.5,
         sync_weight = 20.0,
         sync_decay_rate = 0.95,
-        sync_thres = 10,
-        sync_freq = 1,
-        stride = 16,
-        Wfov=150,
-        Hfov=100,
+        # sync_thres = 10,
+        # sync_freq = 1,
+        # stride = 16,
+        WFov=150,
+        HFov=100,
         h_patch=32,
         w_patch=32,
         n_rows=3,
-        loop_closure = False
+        # loop_closure = False
     )
     
     # # Generate images
@@ -66,7 +65,7 @@ def generate():
     #     sync_thres = 10,
     #     stride = 16,
     # )
-    img.save("./flask-app-design-project/templates/result.jpg")
+    img.save("./templates/result.jpg")
     print(f"[INFO] saved the result")
     return send_file("./templates/result.jpg", as_attachment="result.jpg", mimetype="image/jpg")
 
