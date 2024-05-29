@@ -28,7 +28,7 @@ def generate():
     prompt = request.args.get('prompt')
     seed_everything(100)
     syncdiffusion = SyncDiffusion(device, sd_version="2.0")
-    # Hedi
+    
     img = syncdiffusion.sample_syncdiffusion(
         prompts = prompt,
         negative_prompts = "",

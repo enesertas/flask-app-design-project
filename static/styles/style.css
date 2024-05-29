@@ -196,7 +196,6 @@
   .gallery-images img {
     width: 100%;
     display: block;
-    aspect-ratio: 1 / 1;
     object-fit: cover;
     transition: transform 1000ms;
   }
@@ -205,11 +204,14 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
     gap: 0.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    /* grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); */
     max-width: 100%;
     width: 70rem;
+  }
+
+  li {
+    margin: 1rem;
   }
   
   figure {
